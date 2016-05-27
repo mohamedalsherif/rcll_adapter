@@ -1,0 +1,16 @@
+<package>
+  <description brief="fawkes_ros">
+
+     fawkes_ros
+
+  </description>
+  <author>Mohamed El sherif</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+
+</package>
+
+
