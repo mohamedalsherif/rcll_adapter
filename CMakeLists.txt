@@ -17,14 +17,19 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 
-set(CPP11_EXTRA_FLAGS "")
+set(CPP11_EXTRA_FLAGS "  -lboost_regex -lm  -lm  -lboost_system -lprotobuf  -lcrypto  -pthread")
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11 -pthread  ${CPP11_EXTRA_FLAGS} ${CMAKE_CXX_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "-pthread ${CMAKE_EXE_LINKER_FLAGS} ${CPP11_EXTRA_FLAGS}")
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 
+
+
+
+
+
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(Fawkes COMPONENTS core blackboard interface navgraph protobuf_comm SkillerInterface)
+find_package(Fawkes COMPONENTS core blackboard interface navgraph protobuf_comm netcomm interface aspects SkillerInterface RobotinoLightInterface ZoneInterface Position3DInterface TagVisionInterface)
 if (Fawkes_FOUND)
   add_library(FawkesBackend SHARED
     src/FawkesHandler.cpp)
@@ -43,15 +48,23 @@ if (Fawkes_FOUND)
     INSTALL_RPATH_USE_LINK_PATH TRUE
     BUILD_WITH_INSTALL_RPATH TRUE)
   message(STATUS "Building Fawkes backend plugin")
-
+include_directories(${Fawkes_INCLUDE_DIRS})
+link_directories(${Fawkes_LIBRARY_DIRS})
 else()
   message(STATUS "Fawkes not found, cannot build Fawkes plugin")
 endif()
 
+
+
+rosbuild_genmsg()
+
+
+
+
 #  rosbuild_add_executable(talker src/talker.cpp)
 #  rosbuild_add_executable(listener src/listener.cpp)
 #uncomment if you have defined messages
-rosbuild_genmsg()
+
 #uncomment if you have defined services
 #rosbuild_gensrv()
 
@@ -64,9 +77,44 @@ rosbuild_genmsg()
 #target_link_libraries(example ${PROJECT_NAME})
 #rosbuild_add_library(helloDemo SHARED "${Fawkes_LIBRARY_DIRS}")
 #include_directories(${Fawkes_LIBRARY_DIRS})	
-add_executable (helloDemo src/ros_rcll_starter.cpp)
+
+#include_directories(${Fawkes_LIBRARY_DIRS})
+#set(yagi-back-end
+
+#src/FawkesHandler.h
+#src/FawkesHandler.cpp
+#)
+
+#add_library(yagi-interpreter SHARED
+#${yagi-back-end}
+#)
+
+
+#add_library(helloDemo ${Fawkes_LIBRARY})
+#add_library(FawkesBackend helloDemo)
+
+#target_include_directories (FawkesBackend PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})  
+add_executable (helloDemo src/ros_rcll_starter.cpp )
+#install(TARGETS helloDemo RUNTIME DESTINATION bin)
+
+link_directories( /home/msherif/praktikum/fawkes-robotino/)
+link_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 rosbuild_add_executable(talker src/talker.cpp)
 rosbuild_add_executable(listener src/listener.cpp)
+target_link_libraries( talker ${Fawkes_LIBRARIES})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #include($ENV{ROS_ROOT}/core/rosbuild/FindPkgConfig.cmake)
 #pkg_check_modules(GDKPIXBUF REQUIRED gdk-pixbuf-2.0)
