@@ -278,7 +278,7 @@ bool contains(const std::vector<string> &vec, const string &value)
       header.frame_id=i->frame();
       msg_tag_vision.header=header;
       msg_tag_vision.tags_visible=i->tags_visible();
-      boost::array<int, 12ul> tag_id=msg_tag_vision.tag_id;
+      boost::array<int, 16ul> tag_id=msg_tag_vision.tag_id;
       for(uint j=0;j<tag_id.size();j++)tag_id[j]=i->tag_id(j);
       msg_tag_vision.tag_id=tag_id;
     }
