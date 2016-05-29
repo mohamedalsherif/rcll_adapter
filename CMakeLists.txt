@@ -94,13 +94,11 @@ rosbuild_genmsg()
 #add_library(FawkesBackend helloDemo)
 
 #target_include_directories (FawkesBackend PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})  
-add_executable (helloDemo src/ros_rcll_starter.cpp )
+
 #install(TARGETS helloDemo RUNTIME DESTINATION bin)
 
-link_directories( /home/msherif/praktikum/fawkes-robotino/)
 link_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 rosbuild_add_executable(talker src/talker.cpp)
-rosbuild_add_executable(listener src/listener.cpp)
 target_link_libraries( talker ${Fawkes_LIBRARIES})
 
 
